@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const { prefix, token } = require('.config/config.json');
+const { prefix, token } = require('./config/config.json');
 
 const client = new Discord.Client();
 client.login(token); //dont let this get out lol
@@ -13,8 +13,12 @@ client.on('message', message => {
     }
     if (message.content === '!tribunal') {
         message.channel.send('Pong.');
-
     }
+    if (message.content === '!raid') {
+        raid(message);
+    }
+
+
 });
 
 client.on('ready', () => {
@@ -31,3 +35,13 @@ client.on('ready', () => {
     server.channels.cache.get('386288833731493889').send(`ping julian test server`);  
 });
 
+function raid(message) {
+    var voiceChannel = message.member.voice.channel;
+    voiceChannel.join().then(connection =>
+    {
+     const dispatcher = connection.play('./sounds/siren.mp3');
+     dispatcher.on("finish", end => {
+       voiceChannel.leave();
+       });
+    }).catch(err => console.log(err));
+}
